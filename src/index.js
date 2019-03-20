@@ -1,6 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const App = () => <h1>You will never win!</h1>
+import Header from './components/Header'
+import Timeline from './components/Timeline'
+
+const App = () => (
+  <main>
+    <Header />
+    <Timeline />
+  </main>
+)
 
 ReactDOM.render(<App />, document.getElementById('root'))
