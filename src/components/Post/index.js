@@ -4,13 +4,16 @@ import PostActions from './PostActions'
 import PostHeader from './PostHeader'
 import PostInfo from './PostInfo'
 
-const Post = () => (
-  <div>
-    <PostHeader />
-    <img alt="" src="https://via.placeholder.com/500" />
-    <PostInfo />
-    <PostActions />
-  </div>
-)
+const Post = ({ info }) => {
+  let { urlFoto } = info
+  return (
+    <div>
+      <PostHeader info={info} />
+      <img alt="" src={urlFoto} style={{ width: '500px' }} />
+      <PostInfo info={info} />
+      <PostActions />
+    </div>
+  )
+}
 
 export default Post

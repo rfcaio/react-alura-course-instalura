@@ -1,30 +1,35 @@
 import React from 'react'
 
-const PostInfo = () => (
-  <div>
+const PostInfo = ({ info }) => {
+  let { comentario, comentarios, likers, loginUsuario } = info
+  return (
     <div>
-      <a href="#">cauelp</a>, <a href="#">latromi</a> liked.
-    </div>
+      <div>
+        {
+          likers.map(({ login }, index) => <a key={index} href="#">{login}</a>)
+        }
+        liked that.
+      </div>
 
-    <div>
-      <a href="#">rfcaio</a>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est, illo?
-    </div>
+      <div>
+        <a href="#">{loginUsuario}</a>
+        {comentario}
+      </div>
 
-    <div>
-      <ul>
-        <li>
-          <a href="#">cauelp</a>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem ad, molestiae.
-        </li>
-
-        <li>
-          <a href="#">latromi</a>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum laudantium quae ab fuga odio delectus maiores voluptatibus sit commodi quidem.
-        </li>
-      </ul>
+      <div>
+        <ul>
+          {
+            comentarios.map(({ id, login, texto }) => (
+              <li key={id}>
+                <a href="#">{login}</a>
+                {texto}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default PostInfo
