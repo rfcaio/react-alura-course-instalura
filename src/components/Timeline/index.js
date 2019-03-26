@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 
 import Post from '../Post'
 
@@ -9,7 +10,8 @@ class Timeline extends React.Component {
   }
 
   componentDidMount () {
-    fetch('https://instalura-api.herokuapp.com/api/public/fotos/vitor')
+    let token = window.localStorage.getItem('token')
+    fetch(`https://instalura-api.herokuapp.com/api/fotos?X-AUTH-TOKEN=${token}`)
       .then(response => response.json())
       .then(posts => {
         this.setState(() => ({ posts }))
@@ -20,6 +22,7 @@ class Timeline extends React.Component {
   render () {
     return (
       <section>
+        <Link to="/logout">Logout</Link>
         {
           this.state.posts.map(post => <Post key={post.id} info={post} />)
         }
