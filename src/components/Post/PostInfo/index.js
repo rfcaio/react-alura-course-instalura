@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 
 const PostInfo = ({ info }) => {
   let { comentario, comentarios, likers, loginUsuario } = info
@@ -6,13 +7,13 @@ const PostInfo = ({ info }) => {
     <div>
       <div>
         {
-          likers.map(({ login }, index) => <a key={index} href="#">{login}</a>)
+          likers.map(({ login }, index) => <Link key={index} to={`/timeline/${login}`}>{login}</Link>)
         }
         liked that.
       </div>
 
       <div>
-        <a href="#">{loginUsuario}</a>
+        <Link to={`/timeline/${loginUsuario}`}>{loginUsuario}</Link>
         {comentario}
       </div>
 
@@ -21,7 +22,7 @@ const PostInfo = ({ info }) => {
           {
             comentarios.map(({ id, login, texto }) => (
               <li key={id}>
-                <a href="#">{login}</a>
+                <Link to={`/timeline/${login}`}>{login}</Link>
                 {texto}
               </li>
             ))

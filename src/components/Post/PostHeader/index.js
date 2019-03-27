@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 
 const PostHeader = ({ info }) => {
   let { horario, loginUsuario, urlPerfil } = info
@@ -7,7 +8,7 @@ const PostHeader = ({ info }) => {
       <figure>
         <img src={urlPerfil} />
         <figcaption>
-          <a href="#">{loginUsuario}</a>
+          <Link to={`/timeline/${loginUsuario}`}>{loginUsuario}</Link>
         </figcaption>
       </figure>
       <time>{horario}</time>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { browserHistory } from 'react-router'
+import { browserHistory, Link } from 'react-router'
 
 class Login extends React.Component {
   constructor () {
@@ -36,6 +36,13 @@ class Login extends React.Component {
   render () {
     return (
       <section>
+        <nav>
+          <li><Link to="/timeline">Timeline</Link></li>
+          <li><Link to="/timeline/alots">Timeline of alots</Link></li>
+          <li><Link to="/timeline/rafael">Timeline of rafael</Link></li>
+          <li><Link to="/timeline/vitor">Timeline of vitor</Link></li>
+        </nav>
+
         <form onSubmit={event => { this.onSubmitForm(event) }}>
           <div>
             <label>Username</label>

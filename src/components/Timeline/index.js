@@ -4,19 +4,31 @@ import { Link } from 'react-router'
 import Post from '../Post'
 
 class Timeline extends React.Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.state = { posts: [] }
   }
 
   componentDidMount () {
     let token = window.localStorage.getItem('token')
-    fetch(`https://instalura-api.herokuapp.com/api/fotos?X-AUTH-TOKEN=${token}`)
+    let resource = this.props.login ? `/public/fotos/${this.props.login}` : `/fotos?X-AUTH-TOKEN=${token}`
+    fetch(`https://instalura-api.herokuapp.com/api${resource}`)
       .then(response => response.json())
       .then(posts => {
         this.setState(() => ({ posts }))
       })
       .catch(error => console.error(error))
+  }
+
+  componentWillReceiveProps (props) {
+    if (props.login !== undefined) {
+      fetch(`https://instalura-api.herokuapp.com/api/public/fotos/${props.login}`)
+      .then(response => response.json())
+      .then(posts => {
+        this.setState(() => ({ posts }))
+      })
+      .catch(error => console.error(error))
+    }
   }
 
   render () {

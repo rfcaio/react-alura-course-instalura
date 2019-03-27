@@ -8,22 +8,22 @@ import Logout from './components/Logout'
 import Timeline from './components/Timeline'
 
 const isLoggedIn = (nextState, replace) => {
-  if (window.localStorage.getItem('token') === null) {
+  if (!nextState.params.login && window.localStorage.getItem('token') === null) {
     replace('/')
   }
 }
 
-const App = () => (
+const App = props => (
   <main>
     <Header />
-    <Timeline />
+    <Timeline login={props.params.login} />
   </main>
 )
 
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={Login}></Route>
-    <Route path="/timeline" component={App} onEnter={isLoggedIn}></Route>
+    <Route path="/timeline(/:login)" component={App} onEnter={isLoggedIn}></Route>
     <Route path="/logout" component={Logout}></Route>
   </Router>
 ), document.getElementById('root'))
