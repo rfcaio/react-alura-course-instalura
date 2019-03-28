@@ -11,7 +11,7 @@ const Post = ({ info }) => {
       <PostHeader info={info} />
       <img alt="" src={urlFoto} style={{ width: '500px' }} />
       <PostInfo info={info} />
-      <PostActions />
+      <PostActions info={info} />
     </div>
   )
 }
