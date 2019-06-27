@@ -1,51 +1,22 @@
-import PubSub from 'pubsub-js'
 import React from 'react'
 
-class PostActions extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = { isLiked: this.props.info.likeada }
-  }
+import PostService from '../PostService'
 
+class PostActions extends React.Component {
   addComment (event) {
     event.preventDefault()
-    let token = window.localStorage.getItem('token')
-    fetch(`https://instalura-api.herokuapp.com/api/fotos/${this.props.info.id}/comment?X-AUTH-TOKEN=${token}`, {
-      body: JSON.stringify({ texto: this.comment.value }),
-      headers: new Headers({
-        'Content-type': 'application/json'
-      }),
-      method: 'POST'
-    })
-      .then(response => response.ok ? response.json() : Promise.reject('Could not comment.'))
-      .then(comment => {
-        PubSub.publish('UPDATE_COMMENTS', { id: this.props.info.id, comment })
-      })
-      .catch(error => {
-        window.alert(error)
-      })
+    PostService.addComment(this.props.info.id, this.comment.value, window.localStorage.getItem('token'))
   }
 
   like (event) {
     event.preventDefault()
-    let token = window.localStorage.getItem('token')
-    fetch(`https://instalura-api.herokuapp.com/api/fotos/${this.props.info.id}/like?X-AUTH-TOKEN=${token}`, {
-      method: 'POST'
-    })
-      .then(response => response.ok ? response.json() : Promise.reject('Could not like.'))
-      .then(info => {
-        this.setState(state => ({ isLiked: !state.isLiked }))
-        PubSub.publish('UPDATE_LIKES', { id: this.props.info.id, info })
-      })
-      .catch(error => {
-        window.alert(error)
-      })
+    PostService.like(this.props.info.id, window.localStorage.getItem('token'))
   }
 
   render () {
     return (
       <section>
-        <a href="#" onClick={event => { this.like(event) }}>{this.state.isLiked ? 'Unlike' : 'Like'}</a>
+        <a href="#" onClick={event => { this.like(event) }}>Like</a>
         <form onSubmit={event => { this.addComment(event) }}>
           <input type="text" ref={input => { this.comment = input }} />
           <input type="submit" value="Comment!" />

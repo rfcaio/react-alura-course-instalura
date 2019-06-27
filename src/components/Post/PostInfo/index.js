@@ -1,6 +1,7 @@
-import PubSub from 'pubsub-js'
 import React from 'react'
 import { Link } from 'react-router'
+
+import PostService from '../PostService'
 
 class PostInfo extends React.Component {
   constructor (props) {
@@ -9,25 +10,21 @@ class PostInfo extends React.Component {
   }
 
   componentWillMount () {
-    PubSub.subscribe('UPDATE_COMMENTS', (topic, data) => {
-      if (this.props.info.id === data.id) {
-        this.setState(state => {
-          return { comentarios: [...state.comentarios, data.comment] }
-        })
-      }
+    PostService.subscribeForComments(this.props.info.id, (data) => {
+      this.setState(state => {
+        return { comentarios: [...state.comentarios, data.comment] }
+      })
     })
 
-    PubSub.subscribe('UPDATE_LIKES', (topic, data) => {
-      if (this.props.info.id === data.id) {
-        let like = this.state.likers.find(({ login }) => login === data.info.login)
-        this.setState(state => {
-          return {
-            likers: like === undefined
-              ? [...state.likers, data.info]
-              : state.likers.filter(({ login }) => login !== data.info.login)
-          }
-        })
-      }
+    PostService.subscribeForLikes(this.props.info.id, (data) => {
+      let like = this.state.likers.find(({ login }) => login === data.info.login)
+      this.setState(state => {
+        return {
+          likers: like === undefined
+            ? [...state.likers, data.info]
+            : state.likers.filter(({ login }) => login !== data.info.login)
+        }
+      })
     })
   }
 

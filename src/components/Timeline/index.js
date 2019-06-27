@@ -1,6 +1,7 @@
-import PubSub from 'pubsub-js'
 import React from 'react'
 import { Link } from 'react-router'
+
+import TimelineService from './TimelineService'
 
 import Post from '../Post'
 
@@ -11,30 +12,20 @@ class Timeline extends React.Component {
   }
 
   componentDidMount () {
-    let token = window.localStorage.getItem('token')
-    let resource = this.props.login ? `/public/fotos/${this.props.login}` : `/fotos?X-AUTH-TOKEN=${token}`
-    fetch(`https://instalura-api.herokuapp.com/api${resource}`)
-      .then(response => response.json())
-      .then(posts => {
-        this.setState(() => ({ posts }))
-      })
-      .catch(error => console.error(error))
+    this.props.login
+      ? TimelineService.getPostByLogin(this.props.login)
+      : TimelineService.getPosts(window.localStorage.getItem('token'))
   }
 
   componentWillMount () {
-    PubSub.subscribe('UPDATE_TIMELINE', (topic, data) => {
+    TimelineService.subscribe((data) => {
       this.setState(() => ({ posts: data.posts }))
     })
   }
 
   componentWillReceiveProps (props) {
     if (props.login !== undefined) {
-      fetch(`https://instalura-api.herokuapp.com/api/public/fotos/${props.login}`)
-        .then(response => response.json())
-        .then(posts => {
-          this.setState(() => ({ posts }))
-        })
-        .catch(error => console.error(error))
+      TimelineService.getPostByLogin(props.login)
     }
   }
 
